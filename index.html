@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
   <link rel="stylesheet" href="style.css">
@@ -12,21 +16,41 @@
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <header>TO DO</header>
-      <div class="theme-container">
-        <img src="images/icon-moon.svg" alt="moon theme" >
+    <div class="background-container">
+      <div class="header-container">
+        <div class="header-display">
+          <header>
+            <h1 class="header-title">TO DO</h1>
+          </header>
+          <div class="theme-container">
+            <button class="svg-theme-btn">
+              <img class="svg-theme-icon" src="images/icon-sun.svg" alt="moon theme">
+            </button>
+          </div>
+        </div>
+        <div class="note-input">
+          <button class="svg-container">
+            <img class="addNote" src="images/icon-plus.svg" alt="Add Note" >
+          </button>
+          <input class="input-note" type="text" name="newNote" id="newNode" placeholder="Create a new todo...">
+        </div>
       </div>
     </div>
-    <div class="note-input">
-      <div class="svg-container">
-        <img src="" alt="" srcset="">
+    <div class="todo-container">
+      <div class="todo-list-container">
+        <div class="todo-node">
+          <div>
+            <button class="todo-btn">
+
+            </button>
+            <p class="todo-description">atibus qui imi perspiciatis quis rem laborum!</p>
+          </div>
+        </div>
       </div>
-      <input type="text" name="newNote" id="newNode" placeholder="Create a new todo...">
     </div>
   </div>
 
-  <!-- Todo
+  <!-- 
 
   Add dynamic number items left
 

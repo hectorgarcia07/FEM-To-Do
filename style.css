@@ -1,0 +1,119 @@
+/*
+TODO:
+  CHANGE THE TO DO TO BE A FORM
+
+*/
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+}
+
+.container {
+  max-width: 375px;
+}
+
+.background-container {
+  background-image: url(images/bg-mobile-dark.jpg);
+  height: 30vh;
+  background-repeat: no-repeat;
+}
+
+.header-container {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 5vh;
+}
+
+.header-display {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-title {
+  font-weight: 700;
+  font-size: 30px;
+  color: white;
+  letter-spacing: 0.2em;
+  word-spacing: -0.3em; /* make note that -0.25 is most space on font */
+  margin: 0;
+}
+
+.theme-container {
+  align-self: end;
+}
+
+.svg-theme-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.svg-theme-btn:hover {
+  border: 1px solid black;
+}
+.svg-theme-icon {
+  width: 80%;
+  color: black;
+}
+
+.note-input {
+  display: flex;
+  padding: 0.7em 1em;
+  background-color: hsl(235, 24%, 19%);
+  border: 2px solid hsl(235, 21%, 11%);
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.svg-container {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.svg-container:hover {
+  border: 1px solid black;
+}
+
+.svg-color {
+}
+
+.addNote {
+  display: block; /* without it this will display a small gap */
+}
+
+.input-note {
+  width: 100%;
+  margin-left: 1em;
+  color: white;
+  background-color: hsl(235, 24%, 19%);
+  border: none;
+
+  font-size: 1rem;
+}
+
+.todo-container {
+  height: 70vh;
+  /* background-color: hsl(235, 21%, 11%); */
+}
+
+.todo-list-container {
+}
+
+.todo-node {
+}
+
+.todo-btn {
+}
+
+.todo-description {
+}
