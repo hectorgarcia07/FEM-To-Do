@@ -15,20 +15,44 @@ body {
   font-family: "Outfit", sans-serif;
 }
 
+p {
+  margin: 0;
+}
+
+img {
+  display: block; /* without it this will display a small gap */
+  margin: 0 auto;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding: 0;
+}
+
 .container {
-  max-width: 375px;
+  max-width: 375px; /* switch to rems */
+  border: 1px solid black;
+}
+
+.width-container {
+  width: 87%;
+  margin: 0 auto;
 }
 
 .background-container {
   background-image: url(images/bg-mobile-dark.jpg);
-  height: 30vh;
+  max-height: 200px;
+  /*   height: 30vh;
+ */
   background-repeat: no-repeat;
 }
 
 .header-container {
-  width: 90%;
-  margin: 0 auto;
-  padding-top: 5vh;
+  padding-top: 6vh;
+  position: relative;
 }
 
 .header-display {
@@ -38,10 +62,10 @@ body {
 
 .header-title {
   font-weight: 700;
-  font-size: 30px;
+  font-size: 1.8rem;
   color: white;
-  letter-spacing: 0.2em;
-  word-spacing: -0.3em; /* make note that -0.25 is most space on font */
+  letter-spacing: 0.3em;
+  word-spacing: -0.5em; /* make note that -0.25 is most space on font */
   margin: 0;
 }
 
@@ -50,10 +74,6 @@ body {
 }
 
 .svg-theme-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  border: 1px solid transparent;
 }
 
 .svg-theme-btn:hover {
@@ -62,15 +82,16 @@ body {
 .svg-theme-icon {
   width: 80%;
   color: black;
+  margin-left: auto;
 }
 
 .note-input {
   display: flex;
-  padding: 0.7em 1em;
+  font-size: 1rem;
+  padding: 0.6em 1em;
   background-color: hsl(235, 24%, 19%);
-  border: 2px solid hsl(235, 21%, 11%);
   border-radius: 8px;
-  margin-top: 2rem;
+  margin: 2rem 0 0.8rem;
 }
 
 .svg-container {
@@ -88,12 +109,11 @@ body {
 }
 
 .addNote {
-  display: block; /* without it this will display a small gap */
 }
 
 .input-note {
   width: 100%;
-  margin-left: 1em;
+  margin-left: 0.3em;
   color: white;
   background-color: hsl(235, 24%, 19%);
   border: none;
@@ -102,17 +122,42 @@ body {
 }
 
 .todo-container {
-  height: 70vh;
-  /* background-color: hsl(235, 21%, 11%); */
+  background-color: hsl(235, 21%, 11%);
+  height: calc(100vh - 202px);
 }
 
 .todo-list-container {
 }
 
 .todo-node {
+  display: flex;
+  padding: 1em;
+  background-color: hsl(235, 24%, 19%);
+  color: white;
+  font-size: 1rem;
+  border-bottom: 1px solid hsl(233, 14%, 35%);
+}
+
+.todo-node:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.todo-node:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom: 1px solid transparent;
 }
 
 .todo-btn {
+  height: 1.313rem;
+  width: 1.313rem;
+  border-radius: 50%;
+  background: linear-gradient(90deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  border: none;
+}
+
+.check-svg {
 }
 
 .todo-description {
