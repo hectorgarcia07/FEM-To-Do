@@ -1,7 +1,45 @@
-/*
-TODO:
-  CHANGE THE TO DO TO BE A FORM
+:root[data-theme="dark-theme"] {
+  --background-color: hsl(235, 21%, 11%);
+  --border-bottom-color: hsl(237, 14%, 26%);
+  --node-background-color: hsl(235, 24%, 19%);
+  --form-font-color: hsl(234, 11%, 52%);
+  --fadded-text-color: hsl(233, 14%, 35%);
+  --font-color: hsl(234, 39%, 85%);
+  --title-color: white;
+  --start-gradient: hsl(192, 100%, 67%);
+  --end-gradient: hsl(280, 87%, 65%);
+  --option-hovor-color: hsl(236, 33%, 92%);
+  --active-option-color: hsl(220, 98%, 61%);
+  --background-path-mobile: url(images/bg-mobile-dark.jpg);
+  --background-path-desktop: url(images/bg-desktop-dark.jpg);
+  --icon-plus: url(images/icon-plus-light.svg);
+  --theme-icon: url(images/icon-sun.svg);
+}
 
+:root[data-theme="light-theme"] {
+  --background-color: hsl(236, 33%, 92%);
+  --border-bottom-color: hsl(233, 11%, 84%);
+  --node-background-color: hsl(0, 0%, 98%);
+  --form-font-color: hsl(234, 11%, 52%);
+  --fadded-text-color: hsl(233, 11%, 84%);
+  --font-color: hsl(236, 9%, 61%);
+  --title-color: white;
+  --start-gradient: hsl(192, 100%, 67%);
+  --end-gradient: hsl(280, 87%, 65%);
+  --option-hovor-color: hsl(235, 19%, 35%);
+  --active-option-color: hsl(220, 98%, 61%);
+  --background-path-mobile: url(images/bg-mobile-light.jpg);
+  --background-path-desktop: url(images/bg-desktop-light.jpg);
+  --icon-plus: url(images/icon-plus-dark.svg);
+  --theme-icon: url(images/icon-moon.svg);
+}
+/*
+light
+- Very Light Gray: hsl(0, 0%, 98%)
+- Very Light Grayish Blue: hsl(236, 33%, 92%)
+- Light Grayish Blue: hsl(233, 11%, 84%)
+- Dark Grayish Blue: hsl(236, 9%, 61%)
+- Very Dark Grayish Blue: hsl(235, 19%, 35%) 
 */
 
 *,
@@ -13,6 +51,11 @@ TODO:
 body {
   margin: 0;
   font-family: "Outfit", sans-serif;
+  background-color: var(--background-color);
+}
+
+ul {
+  margin: 0;
 }
 
 p {
@@ -28,13 +71,12 @@ button {
   background: none;
   border: none;
   cursor: pointer;
-  border: 1px solid transparent;
   padding: 0;
+  border: 0px;
 }
 
 .container {
   max-width: 375px; /* switch to rems */
-  border: 1px solid black;
 }
 
 .width-container {
@@ -43,16 +85,15 @@ button {
 }
 
 .background-container {
-  background-image: url(images/bg-mobile-dark.jpg);
-  max-height: 200px;
-  /*   height: 30vh;
- */
+  background-image: var(--background-path-mobile);
   background-repeat: no-repeat;
 }
 
 .header-container {
-  padding-top: 6vh;
+  padding-top: 1.5rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .header-display {
@@ -62,9 +103,9 @@ button {
 
 .header-title {
   font-weight: 700;
-  font-size: 1.8rem;
-  color: white;
-  letter-spacing: 0.3em;
+  font-size: 1.7rem;
+  color: var(--title-color);
+  letter-spacing: 0.25em;
   word-spacing: -0.5em; /* make note that -0.25 is most space on font */
   margin: 0;
 }
@@ -74,22 +115,21 @@ button {
 }
 
 .svg-theme-btn {
+  background: var(--theme-icon) no-repeat center;
 }
 
-.svg-theme-btn:hover {
-  border: 1px solid black;
-}
 .svg-theme-icon {
   width: 80%;
   color: black;
   margin-left: auto;
+  background: var(--theme-icon) no-repeat center right;
 }
 
 .note-input {
   display: flex;
   font-size: 1rem;
   padding: 0.6em 1em;
-  background-color: hsl(235, 24%, 19%);
+  background-color: var(--node-background-color);
   border-radius: 8px;
   margin: 2rem 0 0.8rem;
 }
@@ -99,43 +139,45 @@ button {
   border: none;
   cursor: pointer;
   border: 1px solid transparent;
+  background: var(--icon-plus) no-repeat center;
 }
 
 .svg-container:hover {
   border: 1px solid black;
 }
 
-.svg-color {
-}
-
-.addNote {
-}
-
 .input-note {
   width: 100%;
   margin-left: 0.3em;
-  color: white;
-  background-color: hsl(235, 24%, 19%);
+  color: var(--font-color);
+  background-color: var(--node-background-color);
   border: none;
 
-  font-size: 1rem;
-}
-
-.todo-container {
-  background-color: hsl(235, 21%, 11%);
-  height: calc(100vh - 202px);
+  font-size: 0.75rem;
 }
 
 .todo-list-container {
+  margin-top: 0.2rem;
+  padding: 0;
+  overflow: auto;
+  max-height: 316px;
 }
 
 .todo-node {
   display: flex;
-  padding: 1em;
-  background-color: hsl(235, 24%, 19%);
-  color: white;
+  padding: 1rem 0.8rem 1rem 1rem;
+  background-color: var(--node-background-color);
+  color: var(--font-color);
   font-size: 1rem;
-  border-bottom: 1px solid hsl(233, 14%, 35%);
+  border-bottom: 1px solid var(--border-bottom-color);
+}
+
+.todo-node:hover {
+  cursor: pointer;
+}
+
+.todo-node:hover > .cross-svg {
+  visibility: visible;
 }
 
 .todo-node:first-child {
@@ -143,22 +185,115 @@ button {
   border-top-right-radius: 10px;
 }
 
-.todo-node:last-child {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  border-bottom: 1px solid transparent;
+.todo-btn {
+  border-radius: 50%;
+  padding: 0.6rem;
+  border: 1px solid var(--fadded-text-color);
 }
 
-.todo-btn {
-  height: 1.313rem;
-  width: 1.313rem;
+[class="todo-btn"]:hover {
+  background: linear-gradient(
+        var(--node-background-color),
+        var(--node-background-color)
+      )
+      padding-box,
+    linear-gradient(90deg, var(--start-gradient), var(--end-gradient))
+      border-box;
   border-radius: 50%;
-  background: linear-gradient(90deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  border: 1px solid transparent;
+}
+
+.todo-checked {
+  background: no-repeat center url("images/icon-check.svg"),
+    linear-gradient(90deg, var(--start-gradient), var(--end-gradient));
   border: none;
 }
 
-.check-svg {
+.todo-checked ~ .todo-description {
+  text-decoration: line-through;
+  color: rgb(145, 145, 145);
+}
+
+.svg-theme-btn {
+  background: var(--theme-icon) no-repeat center;
+  border: none;
 }
 
 .todo-description {
+  font-size: 0.6rem;
+  align-self: center;
+  margin-left: 0.8rem;
+}
+
+.todo-detail-node {
+  justify-content: space-between;
+  color: hsl(234, 11%, 52%);
+  padding: 0 0 0 1rem;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: none;
+}
+
+.todo-detail {
+  font-size: 0.7rem;
+  align-self: center;
+  color: var(--form-font-color);
+}
+
+.todo-clear {
+  padding: 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  color: var(--form-font-color);
+}
+
+.todo-detail:hover {
+  color: var(--option-hovor-color);
+}
+
+.todo-clear:hover {
+  color: var(--option-hovor-color);
+}
+
+.cross-svg {
+  margin-left: auto;
+  background: url(images/icon-cross.svg) no-repeat center right;
+  flex-basis: 1rem;
+  visibility: hidden;
+}
+
+.todo-filter {
+  justify-content: space-evenly;
+  padding: 0 3rem;
+  border: none;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.todo-filter:last-child {
+  border-radius: 0px;
+}
+
+.todo-filter-option {
+  color: var(--fadded-text-color);
+  font-weight: 800;
+  padding: 1rem;
+}
+
+.todo-filter-option:hover {
+  color: var(--option-hovor-color);
+}
+
+.active-option {
+  color: var(--active-option-color);
+}
+
+.active-option:hover {
+  color: var(--active-option-color);
+}
+
+.todo-info {
+  text-align: center;
+  color: var(--fadded-text-color);
+  padding: 2rem;
 }
