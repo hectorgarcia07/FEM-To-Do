@@ -1,5 +1,29 @@
+//sets up the theme switcher toggle
 const html = document.querySelector('html')
-html.dataset.theme = 'light-theme'
+const themeToggle = document.getElementById('theme-toggle')
+
+//sets the theme to dark mode if users current OS prefrence is set to dark
+//light mode is the default
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  html.dataset.theme = 'dark-theme'
+}else{
+  html.dataset.theme = 'light-theme'
+}
+
+//toggles the theme switcher
+themeToggle.addEventListener('click', event => {
+  if(html.dataset.theme == 'light-theme'){
+    html.dataset.theme = 'dark-theme'
+  }else{
+    html.dataset.theme = 'light-theme'
+  }
+})
+
+//checks the theme on the OS level and switches theme accordingly
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+  const newColorScheme = event.matches ? "dark" : "light";
+  html.dataset.theme = newColorScheme === 'dark' ? 'dark-theme' : 'light-theme'
+});
 
 let nodes = getAllNodes()
 

@@ -22,7 +22,7 @@
           <header>
             <h1 class="header-title">TO DO</h1>
           </header>
-          <div class="theme-container">
+          <div class="theme-container" id="theme-toggle">
             <button class="svg-theme-btn todo-btn"></button>
           </div>
         </div>
@@ -62,16 +62,21 @@
             <button class="cross-svg"></button>
           </li>
         </ul>
-        <div class="todo-node todo-detail-node">
+        <div class="todo-node todo-detail-node mobile-info">
           <p href="" class="todo-detail">5 items left</p>
           <button class="todo-detail todo-clear">Clear Compleated</button>
         </div>
         <div class="todo-node todo-filter">
-          <button class="todo-filter-option active-option">All</button>
-          <button class="todo-filter-option">Active</button>
-          <button class="todo-filter-option">Compleated</button>
+          <p href="" class="todo-detail desktop-items-left">5 items left</p>
+          <div class="todo-filter-container">
+            <button class="todo-filter-option active-option">All</button>
+            <button class="todo-filter-option">Active</button>
+            <button class="todo-filter-option">Compleated</button>
+          </div>
+          <button class="todo-detail todo-clear desktop-clear-todo">Clear Compleated</button>
         </div>
         <p class="todo-info">Drag and drop to reorder list</p>
+        
       </div>
     </div>
   </div>
