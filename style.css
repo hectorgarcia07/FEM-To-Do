@@ -115,22 +115,10 @@ button {
 .note-input {
   display: flex;
   font-size: 1rem;
-  padding: 0.6em 1em;
+  padding: 0.9em 1em;
   background-color: var(--node-background-color);
   border-radius: 8px;
   margin: 2rem 0 0.8rem;
-}
-
-.svg-container {
-  background: none;
-  border: none;
-  cursor: pointer;
-  border: 1px solid transparent;
-  background: var(--icon-plus) no-repeat center;
-}
-
-.svg-container:hover {
-  border: 1px solid black;
 }
 
 .input-note {
@@ -170,11 +158,36 @@ button {
 
 .todo-btn {
   border-radius: 50%;
-  padding: 0.6rem;
+  padding: 0.8rem;
   border: 1px solid var(--fadded-text-color);
 }
 
-[class="todo-btn"]:hover {
+.todo-description {
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+}
+
+.cross-svg {
+  margin-left: auto;
+  background: url(images/icon-cross.svg) no-repeat center right;
+  flex-basis: 1rem;
+}
+
+.todo-label input[type="checkbox"] {
+  display: none;
+}
+
+.todo-label input + p::before {
+  margin-right: 0.8rem;
+  border-radius: 50%;
+  padding: 0.6rem;
+  border: 1px solid var(--fadded-text-color);
+  content: "";
+  display: inline-block;
+}
+
+.todo-label input[type="checkbox"]:hover + p::before {
   background: linear-gradient(
         var(--node-background-color),
         var(--node-background-color)
@@ -183,18 +196,13 @@ button {
     linear-gradient(90deg, var(--start-gradient), var(--end-gradient))
       border-box;
   border-radius: 50%;
-  border: 1px solid transparent;
+  border-color: transparent;
 }
 
-.todo-checked {
+.todo-label input[type="checkbox"]:checked + p::before {
   background: no-repeat center url("images/icon-check.svg"),
     linear-gradient(90deg, var(--start-gradient), var(--end-gradient));
-  border: none;
-}
-
-.todo-checked ~ .todo-description {
-  text-decoration: line-through;
-  color: rgb(145, 145, 145);
+  border-color: var(--node-background-color);
 }
 
 .svg-theme-btn {
@@ -202,11 +210,20 @@ button {
   border: none;
 }
 
-.todo-description {
-  font-size: 0.6rem;
-  align-self: center;
-  margin-left: 0.8rem;
+.svg-plus-btn {
+  border: none;
+  background: var(--icon-plus) no-repeat center;
 }
+
+/* ------  */
+
+.todo-label {
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* ------------------------------------------ */
 
 .todo-detail-node {
   justify-content: space-between;
@@ -237,12 +254,6 @@ button {
 
 .todo-clear:hover {
   color: var(--option-hovor-color);
-}
-
-.cross-svg {
-  margin-left: auto;
-  background: url(images/icon-cross.svg) no-repeat center right;
-  flex-basis: 1rem;
 }
 
 .todo-filter {

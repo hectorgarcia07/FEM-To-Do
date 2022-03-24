@@ -2,6 +2,19 @@
 const html = document.querySelector('html')
 const themeToggle = document.getElementById('theme-toggle')
 
+//holds list of todo list node
+const todoNodeList = document.getElementById('node-list')
+
+//will be used to get the input text from input form
+const todoInputDescription = document.getElementById('todo-input-form')
+
+//will be used to create a todo node
+const createTodoBtn = document.getElementById('create-todo')
+
+
+/* --- Will be used to control the dark/light theme --- */
+
+
 //sets the theme to dark mode if users current OS prefrence is set to dark
 //light mode is the default
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -24,6 +37,10 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
   const newColorScheme = event.matches ? "dark" : "light";
   html.dataset.theme = newColorScheme === 'dark' ? 'dark-theme' : 'light-theme'
 });
+
+
+/* --- Will be used to handle drag and drop events --- */
+
 
 let nodes = getAllNodes()
 
@@ -78,9 +95,64 @@ function cancelDefault(e){
     return false
 }
 
-nodes.forEach(node => {
-    node.addEventListener('dragstart', dragStart)
-    node.addEventListener('drop', dropped)
-    node.addEventListener('dragenter', cancelDefault)
-    node.addEventListener('dragover', cancelDefault)
-})
+function addDragability(node){
+  node.addEventListener('dragstart', dragStart)
+  node.addEventListener('drop', dropped)
+  node.addEventListener('dragenter', cancelDefault)
+  node.addEventListener('dragover', cancelDefault)
+}
+
+//make each node dragable and droppable
+nodes.forEach( node => addDragability(node) )
+
+
+/* --- Will used to handle the creation of todo nodes --- */
+
+
+//will create a todo node
+function appendTodoNode(event){
+  event.preventDefault()
+
+  const todoDescription = todoInputDescription.value
+
+  //only create node if user inputed something
+  if(todoDescription.length){
+    const todoNode = createTodoNode(todoDescription)
+    todoNodeList.appendChild(todoNode)
+
+    //clears the text input field
+    todoInputDescription.value = ''
+  }
+}
+
+//will be used to create a todo <li> node
+function createTodoNode(description){
+  const liNode = document.createElement('li')
+  const checkBox = document.createElement('input')
+  const label = document.createElement('label')
+  const pTag = document.createElement('p')
+  const deleteBtn = document.createElement('button')
+
+  //add style to nodes
+  liNode.classList.add('todo-node')
+  label.classList.add('todo-label')
+  pTag.classList.add('todo-description')
+  deleteBtn.classList.add('cross-svg')
+
+  pTag.textContent = description
+  liNode.draggable = true
+  checkBox.type = 'checkbox'
+
+  //build the todo node
+  label.appendChild(checkBox)
+  label.appendChild(pTag)
+  label.appendChild(deleteBtn)
+  liNode.appendChild(label)
+
+  //makes the node draggable
+  addDragability(liNode)
+
+  return liNode
+}
+
+createTodoBtn.addEventListener('click', appendTodoNode)

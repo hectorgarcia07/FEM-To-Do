@@ -26,16 +26,24 @@
             <button class="svg-theme-btn todo-btn"></button>
           </div>
         </div>
-        <div class="note-input">
-          <button class="svg-container todo-btn"></button>
-          <input class="input-note" type="text" name="newNote" id="newNode" placeholder="Create a new todo...">
-        </div>
+        <form class="note-input">
+          <button id="create-todo" class="svg-plus-btn todo-btn" type="submit"></button>
+          <input id="todo-input-form" class="input-note" type="text" name="newNote" placeholder="Create a new todo...">
+        </form>
         <ul class="todo-list-container" id="node-list">
-          <li class="todo-node" draggable="true">
+          <!-- <li class="todo-node" draggable="true">
             <button class="todo-btn todo-checked"></button>
             <p class="todo-description">Complete online JavaScript course</p>
             <button class="cross-svg"></button>
+          </li> -->
+          <li class="todo-node" draggable="true">
+            <label class="todo-label">
+              <input type="checkbox">
+              <p class="todo-description">Complete online JavaScript course</p>
+              <button class="cross-svg"></button>
+            </label>
           </li>
+<!-- 
           <li class="todo-node" draggable="true">
             <button class="todo-btn"></button>
             <p class="todo-description">Jog around the park 3x</p>
@@ -61,6 +69,7 @@
             <p class="todo-description">Complete todo app on front end mentor</p>
             <button class="cross-svg"></button>
           </li>
+           -->
         </ul>
         <div class="todo-node todo-detail-node mobile-info">
           <p href="" class="todo-detail">5 items left</p>
