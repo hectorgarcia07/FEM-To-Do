@@ -41,69 +41,59 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
 
 /* --- Will be used to handle drag and drop events --- */
 
-
-let nodes = getAllNodes()
-
-//when the item is draging, set the refrence of the item to the event
-function dragStart(e){
-    let index = nodes.indexOf(e.target)
-    e.dataTransfer.setData("text/plain", index)
-    e.dataTransfer.dropEffect = "move";
-}
-
 function getAllNodes(){
-    let nodes = document.querySelectorAll("#node-list > li")
-    return Array.prototype.slice.call(nodes)
+  let nodes = document.querySelectorAll("#node-list > li")
+  return Array.prototype.slice.call(nodes)
 }
 
-//event fired when you drop a node
-function dropped(e){
-    cancelDefault(e)
+function dragStart(e) {
+  //save the checked state of the node and the the inner text
+  const nodeInfo = { 
+    checked: this.children[0].children[0].checked,
+    textContent: this.children[0].children[1].textContent
+  }
 
-    e.dataTransfer.dropEffect = "move";
+  this.style.opacity = '0.4'
+  dragSrcEl = this
+  e.dataTransfer.effectAllowed = 'move'
+
+  //stores it as a json string for later retrival
+  e.dataTransfer.setData('text/json', JSON.stringify(nodeInfo))
+}
+
+function dragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+}
+
+function dragDrop(e) {
+  if (dragSrcEl != this) {
+    const nodeInfo = JSON.parse(e.dataTransfer.getData('text/json'))
     
-    let index = Number(e.dataTransfer.getData('text/plain'))
-    let target = e.target
-    let targetIndex = nodes.indexOf(e.target)
-    let droppedNode;
+    //updates original moved node with dropped infor
+    dragSrcEl.children[0].children[0].checked = this.children[0].children[0].checked
+    dragSrcEl.children[0].children[1].textContent = this.children[0].children[1].textContent
 
-    droppedNode = nodes[index]
-
-    console.log("Dropped",droppedNode)
-    console.log("Target",target)
-    console.log("Nodes", nodes)
-    console.log("index", index)
-    console.log("targetIndex", targetIndex)
-
-    if(targetIndex >= 0 && index != targetIndex){
-        nodes[index].remove()
-
-        if (targetIndex < index) {
-            target.before(droppedNode)
-        } else if(targetIndex > index) {
-            target.after(droppedNode)
-        }
-    }
-
-    nodes = getAllNodes()
+    //updates the drop target with checked status and text content
+    this.children[0].children[0].checked = nodeInfo.checked
+    this.children[0].children[1].textContent = nodeInfo.textContent
+  }
 }
 
-function cancelDefault(e){
-    e.preventDefault()
-    e.stopPropagation()
-
-    return false
+function dragEnd(e) {
+  this.style.opacity = '1'
 }
 
-function addDragability(node){
-  node.addEventListener('dragstart', dragStart)
-  node.addEventListener('drop', dropped)
-  node.addEventListener('dragenter', cancelDefault)
-  node.addEventListener('dragover', cancelDefault)
+function addEventsDragAndDrop(el) {
+  el.addEventListener('dragstart', dragStart, false);
+  el.addEventListener('dragover', dragOver, false);
+  el.addEventListener('drop', dragDrop, false);
+  el.addEventListener('dragend', dragEnd, false);
 }
+ 
+let listItems = getAllNodes();
 
-//make each node dragable and droppable
-nodes.forEach( node => addDragability(node) )
+listItems.forEach(item => addEventsDragAndDrop(item))
 
 
 /* --- Will used to handle the creation of todo nodes --- */
@@ -150,7 +140,7 @@ function createTodoNode(description){
   liNode.appendChild(label)
 
   //makes the node draggable
-  addDragability(liNode)
+  addEventsDragAndDrop(liNode)
 
   return liNode
 }

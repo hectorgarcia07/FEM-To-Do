@@ -100,3 +100,7 @@ This challenge is completely free. Please share it with anyone who will find it 
 
 https://medium.com/swlh/dark-mode-using-css-variables-cf065a7fa133
 https://codyhouse.co/nuggets/css-gradient-borders
+
+https://webdevtrick.com/html-drag-and-drop-list/
+
+https://www.leenix.co.uk/news-css-tricks-using-images-as-checkboxes-in-your-html-forms-19
