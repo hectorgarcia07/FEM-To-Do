@@ -14,6 +14,7 @@
   --background-path-desktop: url(images/bg-desktop-dark.jpg);
   --icon-plus: url(images/icon-plus-light.svg);
   --theme-icon: url(images/icon-sun.svg);
+  --focused-checkedbox: white;
 }
 
 :root[data-theme="light-theme"] {
@@ -32,6 +33,7 @@
   --background-path-desktop: url(images/bg-desktop-light.jpg);
   --icon-plus: url(images/icon-plus-dark.svg);
   --theme-icon: url(images/icon-moon.svg);
+  --focused-checkedbox: black;
 }
 
 *,
@@ -170,20 +172,33 @@ button {
 
 .cross-svg {
   margin-left: auto;
-  background: url(images/icon-cross.svg) no-repeat center right;
+  background: url(images/icon-cross.svg) no-repeat center;
   flex-basis: 1rem;
 }
 
 .todo-label input[type="checkbox"] {
-  display: none;
+  display: absolute;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  pointer-events: none;
 }
 
-.todo-label input + p::before {
+li > label {
+  user-select: none;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+label > p::before {
+  content: "";
+  transition: 0.2s;
   margin-right: 0.8rem;
   border-radius: 50%;
   padding: 0.6rem;
   border: 1px solid var(--fadded-text-color);
-  content: "";
   display: inline-block;
 }
 
@@ -199,10 +214,22 @@ button {
   border-color: transparent;
 }
 
-.todo-label input[type="checkbox"]:checked + p::before {
+.todo-label input[type="checkbox"]:hover:checked + p::before {
+  background: no-repeat center url("images/icon-check.svg") padding-box,
+    linear-gradient(90deg, var(--start-gradient), var(--end-gradient))
+      border-box;
+  border-radius: 50%;
+  border-color: var(--node-background-color);
+}
+
+input:checked + p::before {
   background: no-repeat center url("images/icon-check.svg"),
     linear-gradient(90deg, var(--start-gradient), var(--end-gradient));
   border-color: var(--node-background-color);
+}
+
+input:focus + p::before {
+  border-color: var(--focused-checkedbox);
 }
 
 .svg-theme-btn {
