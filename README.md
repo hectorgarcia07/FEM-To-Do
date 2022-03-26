@@ -104,3 +104,5 @@ https://codyhouse.co/nuggets/css-gradient-borders
 https://webdevtrick.com/html-drag-and-drop-list/
 
 https://www.leenix.co.uk/news-css-tricks-using-images-as-checkboxes-in-your-html-forms-19
+
+https://codyhouse.co/blog/post/custom-accessible-radio-checkbox-buttons-vertical-alignment

@@ -11,6 +11,12 @@ const todoInputDescription = document.getElementById('todo-input-form')
 //will be used to create a todo node
 const createTodoBtn = document.getElementById('create-todo')
 
+//will be used to update the number of todos left
+const todoNumLeft = document.getElementsByClassName('todo-num-items')
+
+const todoAll = document.getElementById('todo-all')
+const todoActive = document.getElementById('todo-active')
+const todoComplete = document.getElementById('todo-complete')
 
 /* --- Will be used to control the dark/light theme --- */
 
@@ -107,16 +113,22 @@ function appendTodoNode(event){
 
   //only create node if user inputed something
   if(todoDescription.length){
-    const todoNode = createTodoNode(todoDescription)
+    const todoNode = createTodoNode(todoDescription, false)
     todoNodeList.appendChild(todoNode)
 
     //clears the text input field
     todoInputDescription.value = ''
+
+    //adds the node to the local storage, and saves it
+    const todoStorage = JSON.parse(localStorage.getItem('todos'))
+    todoStorage.push({ checked: false, description: todoDescription })
+    localStorage.setItem('todos', JSON.stringify(todoStorage))
   }
 }
 
-//will be used to create a todo <li> node
-function createTodoNode(description){
+//will be used to create a todo <li> node 
+//with it's description and it's checked state
+function createTodoNode(description, checked){
   const liNode = document.createElement('li')
   const checkBox = document.createElement('input')
   const label = document.createElement('label')
@@ -132,6 +144,9 @@ function createTodoNode(description){
   pTag.textContent = description
   liNode.draggable = true
   checkBox.type = 'checkbox'
+  checkBox.checked = checked
+
+  checkBox.addEventListener('change', todoCheckedStatus)
 
   //build the todo node
   label.appendChild(checkBox)
@@ -144,5 +159,45 @@ function createTodoNode(description){
 
   return liNode
 }
+
+//get all todos from local storage and render to the screen
+function renderAllTodo(){
+  const todos = JSON.parse(localStorage.getItem('todos'))
+
+  //add a todo node to the todo-node-list
+  todos.forEach(todo => {
+    let newTodoNode = createTodoNode(todo.description, todo.checked)
+    todoNodeList.appendChild(newTodoNode)
+  })
+
+  updateItemsLeft()
+}
+
+//will be used to update the number of todos yet to be completed
+function updateItemsLeft(){
+  const todos = JSON.parse(localStorage.getItem('todos'))
+  let count = 0
+
+  //count the number of todos left
+  todos.forEach(todo => todo.checked ? null : count++)
+
+  Array.from(todoNumLeft).forEach(todo => {
+    todo.textContent = count == 1 ? "1 item left" : `${count} items left`
+  })
+}
+
+//will be used to toggle and save the checked and unchecked status of 
+//the todo
+//look up uuid
+function todoCheckedStatus(event){
+
+}
+
+//if a todo array doesn't exist, create one
+if(!localStorage.getItem('todos')){
+  localStorage.setItem("todos", JSON.stringify([]))
+}
+
+renderAllTodo()
 
 createTodoBtn.addEventListener('click', appendTodoNode)
