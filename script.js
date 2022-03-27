@@ -109,11 +109,12 @@ listItems.forEach(item => addEventsDragAndDrop(item))
 function appendTodoNode(event){
   event.preventDefault()
 
-  const todoDescription = todoInputDescription.value
+  const description = todoInputDescription.value
 
   //only create node if user inputed something
-  if(todoDescription.length){
-    const todoNode = createTodoNode(todoDescription, false)
+  if(description.length){
+    const id = uuidv4()
+    const todoNode = createTodoNode(description, false, id)
     todoNodeList.appendChild(todoNode)
 
     //clears the text input field
@@ -121,14 +122,14 @@ function appendTodoNode(event){
 
     //adds the node to the local storage, and saves it
     const todoStorage = JSON.parse(localStorage.getItem('todos'))
-    todoStorage.push({ checked: false, description: todoDescription })
+    todoStorage.push( { checked: false, description, id } )
     localStorage.setItem('todos', JSON.stringify(todoStorage))
   }
 }
 
 //will be used to create a todo <li> node 
 //with it's description and it's checked state
-function createTodoNode(description, checked){
+function createTodoNode(description, checked, id){
   const liNode = document.createElement('li')
   const checkBox = document.createElement('input')
   const label = document.createElement('label')
@@ -146,13 +147,19 @@ function createTodoNode(description, checked){
   checkBox.type = 'checkbox'
   checkBox.checked = checked
 
+  //adds event listener for the toggle of check
   checkBox.addEventListener('change', todoCheckedStatus)
+  //adds event to remove node from local storage
+  deleteBtn.addEventListener('click', removeTodoNode)
 
   //build the todo node
   label.appendChild(checkBox)
   label.appendChild(pTag)
   label.appendChild(deleteBtn)
   liNode.appendChild(label)
+
+  //add unique id to the checkbox node
+  checkBox.id = id
 
   //makes the node draggable
   addEventsDragAndDrop(liNode)
@@ -166,7 +173,7 @@ function renderAllTodo(){
 
   //add a todo node to the todo-node-list
   todos.forEach(todo => {
-    let newTodoNode = createTodoNode(todo.description, todo.checked)
+    let newTodoNode = createTodoNode(todo.description, todo.checked, todo.id)
     todoNodeList.appendChild(newTodoNode)
   })
 
@@ -186,11 +193,113 @@ function updateItemsLeft(){
   })
 }
 
+//will remove the todo node from the list and re-renders the list
+function removeTodoNode(event){
+  console.log("CLICKED")
+  const todos = JSON.parse(localStorage.getItem('todos'))
+
+  const newTodo = todos.filter(todo => {
+    console.log(todo.id, event.target)
+    return todo.id !== event.target.id
+  })
+
+  //save the updated todo in local storage
+  localStorage.setItem('todos', JSON.stringify(newTodo))
+
+  const currentActiveOption = document.querySelector('.active-option')
+
+  //renders based on what the selected filter option is
+  if(currentActiveOption.textContent === 'Active'){
+    showActiveTodos()
+  }
+  else if(currentActiveOption.textContent === 'Compleated'){
+    showCompletedTodos()
+  }
+  else if(currentActiveOption.textContent === 'All'){
+    showAllTodos()
+  }
+}
+
 //will be used to toggle and save the checked and unchecked status of 
 //the todo
-//look up uuid
 function todoCheckedStatus(event){
+  const id = event.target.id
 
+  //get the todo list from 
+  const todoStorage = JSON.parse(localStorage.getItem('todos'))
+
+  todoStorage.find(todo => {
+    if(todo.id === id){
+      todo.checked = !todo.checked
+      return true
+    }
+    return false
+  })
+
+  //save the updated todo in local storage
+  localStorage.setItem('todos', JSON.stringify(todoStorage))
+
+  updateItemsLeft()
+
+  const currentActiveOption = document.querySelector('.active-option')
+
+  if(currentActiveOption.textContent === 'Active'){
+    showActiveTodos()
+  }
+  else if(currentActiveOption.textContent === 'Compleated'){
+    showCompletedTodos()
+  }
+}
+
+//appends the active-option to the current active filter option
+function updateOptionClass(node){
+  const oldOption = document.querySelector('.active-option')
+
+  if(oldOption !== node){
+    console.log('lllll')
+    oldOption.classList.remove('active-option')
+    node.classList.add('active-option')
+  }
+}
+
+//will show all todo items in the local storage
+function showAllTodos(){
+  const todoStorage = JSON.parse(localStorage.getItem('todos'))
+
+  //stores all todo nodes
+  const todoNodes = todoStorage.map(todo => createTodoNode(todo.description, todo.checked, todo.id))
+
+  todoNodeList.replaceChildren(...todoNodes)//renders it to the ul list
+
+  updateOptionClass(todoAll)//updates the css class when active
+}
+
+//show only current active todo nodes
+function showActiveTodos(){
+  const todoStorage = JSON.parse(localStorage.getItem('todos'))
+
+  //will store only nodes that are not checked
+  const todoNodes = todoStorage
+    .filter(todo => !todo.checked || false )
+    .map(todo => createTodoNode(todo.description, todo.checked, todo.id))
+
+  todoNodeList.replaceChildren(...todoNodes)//renders it to the ul list
+
+  updateOptionClass(todoActive)//updates the css class when active
+}
+
+//will dislplay all completed todos
+function showCompletedTodos(){
+  const todoStorage = JSON.parse(localStorage.getItem('todos'))
+
+  //will store only nodes that are not checked
+  const todoNodes = todoStorage
+    .filter(todo => todo.checked || false )
+    .map(todo => createTodoNode(todo.description, todo.checked, todo.id))
+
+  todoNodeList.replaceChildren(...todoNodes)//renders it to the ul list
+
+  updateOptionClass(todoComplete)//updates the css class when active
 }
 
 //if a todo array doesn't exist, create one
@@ -201,3 +310,7 @@ if(!localStorage.getItem('todos')){
 renderAllTodo()
 
 createTodoBtn.addEventListener('click', appendTodoNode)
+
+todoAll.addEventListener('click', showAllTodos)
+todoActive.addEventListener('click', showActiveTodos)
+todoComplete.addEventListener('click', showCompletedTodos)
