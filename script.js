@@ -18,6 +18,8 @@ const todoAll = document.getElementById('todo-all')
 const todoActive = document.getElementById('todo-active')
 const todoComplete = document.getElementById('todo-complete')
 
+const clearAllComplete = document.getElementsByClassName('todo-clear')
+
 /* --- Will be used to control the dark/light theme --- */
 
 
@@ -124,12 +126,16 @@ function appendTodoNode(event){
     const todoStorage = JSON.parse(localStorage.getItem('todos'))
     todoStorage.push( { checked: false, description, id } )
     localStorage.setItem('todos', JSON.stringify(todoStorage))
+
+    updateItemsLeft() //updates the number of todos left to do
   }
 }
 
 //will be used to create a todo <li> node 
 //with it's description and it's checked state
 function createTodoNode(description, checked, id){
+  console.log(description, checked, id)
+
   const liNode = document.createElement('li')
   const checkBox = document.createElement('input')
   const label = document.createElement('label')
@@ -158,8 +164,9 @@ function createTodoNode(description, checked, id){
   label.appendChild(deleteBtn)
   liNode.appendChild(label)
 
-  //add unique id to the checkbox node
-  checkBox.id = id
+  //add the unique id as a data set to refrence the current node
+  checkBox.dataset.id = id
+  deleteBtn.dataset.id = id
 
   //makes the node draggable
   addEventsDragAndDrop(liNode)
@@ -195,13 +202,13 @@ function updateItemsLeft(){
 
 //will remove the todo node from the list and re-renders the list
 function removeTodoNode(event){
-  console.log("CLICKED")
   const todos = JSON.parse(localStorage.getItem('todos'))
 
-  const newTodo = todos.filter(todo => {
-    console.log(todo.id, event.target)
-    return todo.id !== event.target.id
-  })
+  //returns new array list of todo nodes without the deleted todo
+  const newTodo = todos.filter(todo => todo.id !== event.target.dataset.id)
+
+  console.log(newTodo)
+  console.log(event.target.dataset.id)
 
   //save the updated todo in local storage
   localStorage.setItem('todos', JSON.stringify(newTodo))
@@ -218,12 +225,14 @@ function removeTodoNode(event){
   else if(currentActiveOption.textContent === 'All'){
     showAllTodos()
   }
+
+  updateItemsLeft() //updates the number of todos left to do
 }
 
 //will be used to toggle and save the checked and unchecked status of 
 //the todo
 function todoCheckedStatus(event){
-  const id = event.target.id
+  const id = event.target.dataset.id
 
   //get the todo list from 
   const todoStorage = JSON.parse(localStorage.getItem('todos'))
@@ -256,7 +265,6 @@ function updateOptionClass(node){
   const oldOption = document.querySelector('.active-option')
 
   if(oldOption !== node){
-    console.log('lllll')
     oldOption.classList.remove('active-option')
     node.classList.add('active-option')
   }
@@ -302,6 +310,34 @@ function showCompletedTodos(){
   updateOptionClass(todoComplete)//updates the css class when active
 }
 
+//will clear out all completed todos and leave the ones that havent been done yet
+function clearCompletedTodoNode(event){
+  const todoStorage = JSON.parse(localStorage.getItem('todos'))
+
+  //will contain only todos that havent been checked yet
+  const todoNodes = todoStorage.filter(todo => !todo.checked || false )
+
+  //save it to the local storage
+  localStorage.setItem('todos', JSON.stringify(todoNodes))
+
+  const todoDOM = todoNodes.map(todo => createTodoNode(todo.description, todo.checked, todo.id))
+
+  todoNodeList.replaceChildren(...todoDOM)//renders it to the ul list
+
+  //shows the appropriate items based on current filter
+  const currentActiveOption = document.querySelector('.active-option')
+
+  if(currentActiveOption.textContent === 'Active'){
+    showActiveTodos()
+  }
+  else if(currentActiveOption.textContent === 'Compleated'){
+    showCompletedTodos()
+  }
+  else if(currentActiveOption.textContent === 'All'){
+    showAllTodos()
+  }
+}
+
 //if a todo array doesn't exist, create one
 if(!localStorage.getItem('todos')){
   localStorage.setItem("todos", JSON.stringify([]))
@@ -314,3 +350,7 @@ createTodoBtn.addEventListener('click', appendTodoNode)
 todoAll.addEventListener('click', showAllTodos)
 todoActive.addEventListener('click', showActiveTodos)
 todoComplete.addEventListener('click', showCompletedTodos)
+
+for(let item of clearAllComplete){
+  item.addEventListener('click', clearCompletedTodoNode)
+}
