@@ -58,7 +58,8 @@ function dragStart(e) {
   //save the checked state of the node and the the inner text
   const nodeInfo = { 
     checked: this.children[0].children[0].checked,
-    textContent: this.children[0].children[1].textContent
+    textContent: this.children[0].children[1].textContent,
+    id: this.children[0].children[0].dataset.id
   }
 
   this.style.opacity = '0.4'
@@ -78,13 +79,49 @@ function dragDrop(e) {
   if (dragSrcEl != this) {
     const nodeInfo = JSON.parse(e.dataTransfer.getData('text/json'))
     
+    const thisChecked = this.children[0].children[0].checked
+    const thisDescription = this.children[0].children[1].textContent
+    const thisID =  this.children[0].children[0].dataset.id
+
+    //update the new positions and save it to local storage
+    const todoStorage = JSON.parse(localStorage.getItem('todos'))
+    const firstTodoNode = {checked: nodeInfo.checked, description: nodeInfo.textContent, id: nodeInfo.id}
+    const secondTodoNode = {checked: thisChecked, description: thisDescription, id: thisID}
+ 
+    const updatedTodoPosition = todoStorage.map(todo => {
+      if(todo.id === firstTodoNode.id){
+        return secondTodoNode
+      }
+      else if(todo.id === secondTodoNode.id){
+        return firstTodoNode
+      }
+      return todo
+    })
+ 
+     //save the new positions of the todo node
+    localStorage.setItem('todos', JSON.stringify(updatedTodoPosition))
+    /* 
     //updates original moved node with dropped infor
     dragSrcEl.children[0].children[0].checked = this.children[0].children[0].checked
     dragSrcEl.children[0].children[1].textContent = this.children[0].children[1].textContent
+    dragSrcEl.children[0].children[0].id = thisID
 
     //updates the drop target with checked status and text content
     this.children[0].children[0].checked = nodeInfo.checked
-    this.children[0].children[1].textContent = nodeInfo.textContent
+    this.children[0].children[1].textContent = nodeInfo.textContent */
+
+    const currentActiveOption = document.querySelector('.active-option')
+
+    //renders based on what the selected filter option is
+    if(currentActiveOption.textContent === 'Active'){
+      showActiveTodos()
+    }
+    else if(currentActiveOption.textContent === 'Compleated'){
+      showCompletedTodos()
+    }
+    else if(currentActiveOption.textContent === 'All'){
+      showAllTodos()
+    }    
   }
 }
 
@@ -92,6 +129,7 @@ function dragEnd(e) {
   this.style.opacity = '1'
 }
 
+//adds the ability to drag/drop a node
 function addEventsDragAndDrop(el) {
   el.addEventListener('dragstart', dragStart, false);
   el.addEventListener('dragover', dragOver, false);
@@ -99,10 +137,6 @@ function addEventsDragAndDrop(el) {
   el.addEventListener('dragend', dragEnd, false);
 }
  
-let listItems = getAllNodes();
-
-listItems.forEach(item => addEventsDragAndDrop(item))
-
 
 /* --- Will used to handle the creation of todo nodes --- */
 
@@ -128,14 +162,27 @@ function appendTodoNode(event){
     localStorage.setItem('todos', JSON.stringify(todoStorage))
 
     updateItemsLeft() //updates the number of todos left to do
+
+    const currentActiveOption = document.querySelector('.active-option')
+
+    //renders based on what the selected filter option is
+    if(currentActiveOption.textContent === 'Active'){
+      showActiveTodos()
+    }
+    else if(currentActiveOption.textContent === 'Compleated'){
+      showCompletedTodos()
+    }
+    else if(currentActiveOption.textContent === 'All'){
+      showAllTodos()
+    }
+
+    updateItemsLeft() //updates the number of todos left to do
   }
 }
 
 //will be used to create a todo <li> node 
 //with it's description and it's checked state
 function createTodoNode(description, checked, id){
-  console.log(description, checked, id)
-
   const liNode = document.createElement('li')
   const checkBox = document.createElement('input')
   const label = document.createElement('label')
@@ -206,9 +253,6 @@ function removeTodoNode(event){
 
   //returns new array list of todo nodes without the deleted todo
   const newTodo = todos.filter(todo => todo.id !== event.target.dataset.id)
-
-  console.log(newTodo)
-  console.log(event.target.dataset.id)
 
   //save the updated todo in local storage
   localStorage.setItem('todos', JSON.stringify(newTodo))
