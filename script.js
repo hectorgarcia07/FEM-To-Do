@@ -100,15 +100,6 @@ function dragDrop(e) {
  
      //save the new positions of the todo node
     localStorage.setItem('todos', JSON.stringify(updatedTodoPosition))
-    /* 
-    //updates original moved node with dropped infor
-    dragSrcEl.children[0].children[0].checked = this.children[0].children[0].checked
-    dragSrcEl.children[0].children[1].textContent = this.children[0].children[1].textContent
-    dragSrcEl.children[0].children[0].id = thisID
-
-    //updates the drop target with checked status and text content
-    this.children[0].children[0].checked = nodeInfo.checked
-    this.children[0].children[1].textContent = nodeInfo.textContent */
 
     const currentActiveOption = document.querySelector('.active-option')
 
@@ -205,6 +196,9 @@ function createTodoNode(description, checked, id){
   //adds event to remove node from local storage
   deleteBtn.addEventListener('click', removeTodoNode)
 
+  //put line throught p tag if checkbox is checked
+  checked ? pTag.classList.add('todo-compleated') : null
+
   //build the todo node
   label.appendChild(checkBox)
   label.appendChild(pTag)
@@ -277,7 +271,7 @@ function removeTodoNode(event){
 //the todo
 function todoCheckedStatus(event){
   const id = event.target.dataset.id
-
+  
   //get the todo list from 
   const todoStorage = JSON.parse(localStorage.getItem('todos'))
 
@@ -288,6 +282,12 @@ function todoCheckedStatus(event){
     }
     return false
   })
+
+  if(event.target.checked){
+    event.target.nextElementSibling.classList.add('todo-compleated')
+  }else{
+    event.target.nextElementSibling.classList.remove('todo-compleated')
+  }
 
   //save the updated todo in local storage
   localStorage.setItem('todos', JSON.stringify(todoStorage))
