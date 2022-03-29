@@ -365,6 +365,7 @@ input:focus + p::before {
 
   .background-container {
     background-image: var(--background-path-desktop);
+    max-height: 200px;
   }
 
   .desktop-clear-todo {
